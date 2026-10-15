@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0a4f9e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>CRM Excursões Península</title>
+<style>
+:root{--blue:#0a4f9e;--blue-d:#07356b;--teal:#10b4c2;--teal-l:#dcf6f8;--bg:#f1f7fb;--card:#ffffff;--text:#0e2740;--muted:#5a7189;--line:#dce7ef;--danger:#cf3550;--danger-l:#fde8ec;--ok:#0b9a6a;--ok-l:#dff6ec;--warn:#b86e00;--warn-l:#fff1d6;--accent:#0a4f9e;--in:#ffffff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1722;--card:#10263a;--text:#e5f0f9;--muted:#8fa7bc;--line:#23405a;--teal-l:#0f3a44;--danger-l:#3b1822;--ok-l:#0d3a2e;--warn-l:#3a2a0a;--accent:#5fb0ff;--in:#0c1f30;--danger:#ff7088;--ok:#3fd6a0;--warn:#ffbe55}}
+:root[data-theme="dark"]{--bg:#0a1722;--card:#10263a;--text:#e5f0f9;--muted:#8fa7bc;--line:#23405a;--teal-l:#0f3a44;--danger-l:#3b1822;--ok-l:#0d3a2e;--warn-l:#3a2a0a;--accent:#5fb0ff;--in:#0c1f30;--danger:#ff7088;--ok:#3fd6a0;--warn:#ffbe55}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:linear-gradient(135deg,var(--blue-d),var(--blue) 55%,var(--teal));color:#fff;padding:12px 16px;box-shadow:0 2px 10px rgba(7,53,107,.25)}
+.brand{display:flex;align-items:center;gap:12px;max-width:760px;margin:0 auto}
+.logo{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:none}
+.brand h1{font-size:17px;font-weight:700;letter-spacing:.2px}
+.brand p{font-size:12px;opacity:.85}
+main{max-width:760px;margin:0 auto;padding:14px 14px calc(92px + env(safe-area-inset-bottom,0px))}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding:6px 2px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px rgba(7,53,107,.08)}
+.nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;color:var(--muted);font-size:10px;font-weight:600;cursor:pointer;position:relative;min-width:0}
+.nav button.on{color:var(--accent)}
+.nav button.on::before{content:"";position:absolute;top:-7px;width:26px;height:3px;border-radius:0 0 4px 4px;background:var(--teal)}
+.sec{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 8px}
+.sec h2{font-size:15px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(7,53,107,.05)}
+.row{display:flex;gap:8px;align-items:center}.between{justify-content:space-between}.wrap{flex-wrap:wrap}
+.muted{color:var(--muted)}.small{font-size:12.5px}.right{text-align:right}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px;padding:12px}
+.stat span{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.stat b{display:block;font-size:19px;margin-top:2px;font-variant-numeric:tabular-nums}
+.stat.blue{border-left-color:var(--blue)}.stat.red{border-left-color:var(--danger)}.stat.green{border-left-color:var(--ok)}.stat.amber{border-left-color:#e3a21a}
+.stat small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.pos{color:var(--ok)}.neg{color:var(--danger)}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;min-height:42px}
+.btn.sm{padding:6px 10px;min-height:34px;font-size:13px;border-radius:10px}
+.btn.primary{background:linear-gradient(135deg,var(--blue),#1272c9);color:#fff;border-color:transparent}
+.btn.teal{background:var(--teal);color:#04323a;border-color:transparent}
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.btn.block{width:100%}
+.btn:disabled{opacity:.55;cursor:wait}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.fld{display:block;margin-bottom:12px}
+.fld>span{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.fld input,.fld select,.fld textarea,.search{width:100%;min-height:44px;border:1px solid var(--line);background:var(--in);border-radius:12px;padding:10px 12px;font-size:16px}
+.fld textarea{resize:vertical;min-height:70px}
+.fld input:focus,.fld select:focus,.fld textarea:focus,.search:focus{outline:2px solid var(--teal);outline-offset:0;border-color:var(--teal)}
+.search{margin-bottom:10px}
+.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.b-ok{background:var(--ok-l);color:var(--ok)}.b-bad{background:var(--danger-l);color:var(--danger)}.b-warn{background:var(--warn-l);color:var(--warn)}.b-info{background:var(--teal-l);color:var(--accent)}.b-mute{background:var(--line);color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:8px 0 5px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));border-radius:99px}
+.bar.full i{background:var(--danger)}
+.card h3{font-size:15.5px;font-weight:700}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.note{background:var(--warn-l);color:var(--warn);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13.5px;font-weight:600}
+.empty{text-align:center;padding:28px 16px;color:var(--muted)}
+.empty h3{color:var(--text);margin-bottom:6px}
+.empty .btn{margin-top:12px}
+.hint{font-size:12.5px;margin:-4px 0 12px;color:var(--muted)}.hint.bad{color:var(--danger);font-weight:700}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(5,20,38,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet-m{background:var(--card);width:100%;max-width:560px;max-height:94%;border-radius:20px 20px 0 0;display:flex;flex-direction:column;animation:up .2s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet-m header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+.sheet-m header h2{font-size:16px}
+.sheet-m .body{padding:14px 16px;overflow:auto;-webkit-overflow-scrolling:touch}
+.sheet-m footer{padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;gap:8px}
+.sheet-m footer .btn{flex:1}
+.xbtn{background:none;border:0;font-size:24px;line-height:1;color:var(--muted);cursor:pointer;padding:4px 8px}
+.err{background:var(--danger-l);color:var(--danger);border-radius:10px;padding:9px 12px;font-size:13.5px;font-weight:600;margin-bottom:10px}
+#confirm{position:fixed;inset:0;z-index:70;background:rgba(5,20,38,.6);display:grid;place-items:center;padding:20px}
+#confirm .box{background:var(--card);border-radius:18px;padding:18px;max-width:420px;width:100%}
+#confirm p{white-space:pre-line;margin-bottom:14px}
+#confirm .row .btn{flex:1}
+#toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:#0e2740;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;max-width:92%;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#toast.bad{background:var(--danger);color:#fff}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.tbl th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.tbl .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rep h2{font-size:17px;margin-bottom:2px}
+.rep .meta{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.tot{margin-top:12px;display:flex;flex-direction:column;gap:3px;align-items:flex-end;font-size:14px}
+.tot b{font-variant-numeric:tabular-nums}
+.pline{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.pline:last-child{border-bottom:0}
+@media (min-width:700px){.modal{align-items:center}.sheet-m{border-radius:20px}.stats{grid-template-columns:repeat(4,1fr)}}
+.hbtn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:6px 12px;font-weight:600;cursor:pointer}
+.login{max-width:420px;margin:24px auto}
+.login h2{font-size:18px;margin-bottom:4px}
+.login p{margin-bottom:12px}
+@media print{
+  :root{--bg:#fff;--card:#fff;--text:#000;--muted:#444;--line:#aaa;--accent:#000;padding:0}
+  html,body{background:#fff}
+  .noprint,.top,.nav,.modal,#toast,#confirm{display:none!important}
+  main{padding:0;max-width:none}
+  .card{box-shadow:none;border:0;padding:0}
+  .tbl th,.tbl td{border-bottom:1px solid #999}
+  tr{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header class="top noprint">
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 14c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/><path d="M2 19c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2"/></svg></div>
+    <div style="flex:1;min-width:0"><h1>CRM Excursões Península</h1><p id="sub">Carregando…</p></div>
+    <button class="hbtn" id="btnSair" data-act="logout" hidden>Sair</button>
+  </div>
+</header>
+<main id="view"></main>
+<nav class="nav noprint" id="nav"></nav>
+<div class="modal noprint" id="modal" hidden></div>
+<div id="confirm" hidden></div>
+<div id="toast" hidden></div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {getFirestore,initializeFirestore,persistentLocalCache,persistentMultipleTabManager,collection,doc,addDoc as fsAddDoc,updateDoc,onSnapshot,runTransaction} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+/* ============================================================
+   CONFIGURAÇÃO DO FIREBASE  —  cole aqui os dados do seu projeto
+   (Console do Firebase > Configurações do projeto > Seus apps > Web)
+   ============================================================ */
+const firebaseConfig={
+  apiKey:'AIzaSyDW8SiwY1fs9y3IvrXK__APGTelm30Qv_Q',
+  authDomain:'crm-excursoes-peninsula-e7522.firebaseapp.com',
+  projectId:'crm-excursoes-peninsula-e7522',
+  storageBucket:'crm-excursoes-peninsula-e7522.firebasestorage.app',
+  messagingSenderId:'944350651365',
+  appId:'1:944350651365:web:90f5d9c2cac0013d19450c'
+};
+const CONFIG_OK=!Object.values(firebaseConfig).some(v=>String(v).indexOf('COLE_AQUI')>=0);
+
+(function(){
+'use strict';
+class Err extends Error{}
+const $=(s,r)=>(r||document).querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const BRL=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+const money=c=>BRL.format((Number(c)||0)/100);
+const inputMoney=c=>((Number(c)||0)/100).toFixed(2).replace('.',',');
+function parseCents(v){
+  let s=String(v==null?'':v).trim().replace(/R\$|\s/g,'');
+  if(!s) return NaN;
+  if(s.indexOf(',')>=0) s=s.replace(/\./g,'').replace(',','.');
+  else if(/^\d{1,3}(\.\d{3})+$/.test(s)) s=s.replace(/\./g,'');
+  const n=Number(s);
+  return isFinite(n)&&n>=0?Math.round(n*100):NaN;
+}
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const fmtDate=iso=>iso?String(iso).split('-').reverse().join('/'):'';
+const fmtNow=()=>{const d=new Date();return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes())};
+const sum=(a,f)=>a.reduce((s,x)=>s+(Number(f(x))||0),0);
+const byDate=(a,b)=>((a.data||'')+(a.saida||'')).localeCompare((b.data||'')+(b.saida||''));
+const FORMAS=['Pix','Dinheiro','Cartão','Transferência','Outro'];
+const CATS=['Transporte / ônibus','Ingressos do parque','Alimentação','Combustível','Pedágio e estacionamento','Guia / monitor','Divulgação','Outros'];
+
+const IC={
+  inicio:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  excursoes:'<rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 11h16M8 21v-4M16 21v-4"/>',
+  clientes:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4.5a3.5 3.5 0 010 7M22 20c0-3-2-5-5-5.7"/>',
+  reservas:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>',
+  fin:'<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/>',
+  rel:'<path d="M6 9V3h12v6M6 18H4v-7h16v7h-2"/><rect x="6" y="14" width="12" height="7"/>'
+};
+const NAV=[['inicio','Início'],['excursoes','Excursões'],['clientes','Clientes'],['reservas','Reservas'],['fin','Financeiro'],['rel','Relatórios']];
+const ic=n=>'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+IC[n]+'</svg>';
+
+const S={excursoes:[],clientes:[],reservas:[],lancamentos:[],loaded:{},tab:'inicio',authChecked:false,user:null,fatal:'',loginErr:'',loginEmail:'',canWrite:true,err:'',
+  holder:'h'+Math.random().toString(36).slice(2,10),modal:null,confirmRes:null,
+  q:{excursoes:'',clientes:'',reservas:'',fin:''},
+  f:{ex:'proximas',res:'ativas',resEx:'',cli:'clientes',finTipo:'todos',finDe:'',finAte:'',finCanc:'0'},
+  rel:{tipo:'embarque',ex:'',de:'',ate:''}};
+let C={EX:{},CL:{},RS:{},pago:{},ocup:{}};
+
+function compute(){
+  const c={EX:{},CL:{},RS:{},pago:{},ocup:{}};
+  S.excursoes.forEach(e=>c.EX[e.id]=e);
+  S.clientes.forEach(x=>c.CL[x.id]=x);
+  S.reservas.forEach(r=>c.RS[r.id]=r);
+  S.lancamentos.forEach(l=>{if(l.status!=='cancelado'&&l.tipo==='receita'&&l.reservaId)c.pago[l.reservaId]=(c.pago[l.reservaId]||0)+(Number(l.valor)||0)});
+  S.reservas.forEach(r=>{const e=c.EX[r.excursaoId];if(r.status!=='cancelada'&&e&&e.status!=='cancelada')c.ocup[r.excursaoId]=(c.ocup[r.excursaoId]||0)+(Number(r.qtd)||0)});
+  return c;
+}
+const resAtiva=r=>{const e=C.EX[r.excursaoId];return r.status!=='cancelada'&&!!e&&e.status!=='cancelada'};
+const pago=r=>C.pago[r.id]||0;
+const saldo=r=>Math.max(0,(Number(r.total)||0)-pago(r));
+const vagasLivres=e=>Math.max(0,(Number(e.capacidade)||0)-(C.ocup[e.id]||0));
+const W=h=>S.canWrite?h:'';
+
+/* ---------- mensagens ---------- */
+let toastT;
+function toast(msg,bad){const t=$('#toast');t.textContent=msg;t.className=bad?'bad':'';t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},bad?5200:2600)}
+const AUTHMSG={'auth/invalid-credential':'E-mail ou senha incorretos.','auth/wrong-password':'E-mail ou senha incorretos.','auth/user-not-found':'E-mail ou senha incorretos.','auth/invalid-email':'E-mail inválido.','auth/too-many-requests':'Muitas tentativas. Aguarde alguns minutos e tente de novo.','auth/network-request-failed':'Sem conexão com a internet.','auth/user-disabled':'Este usuário foi desativado.'};
+function errMsg(e){
+  if(e instanceof Err) return e.message;
+  const c=e&&e.code;
+  if(c&&AUTHMSG[c]) return AUTHMSG[c];
+  if(c==='permission-denied') return 'Sem permissão: este e-mail não está autorizado nas regras do banco de dados.';
+  if(c==='resource-exhausted') return 'A cota gratuita diária do Firebase foi atingida. Tente novamente amanhã.';
+  if(c==='unavailable') return 'Sem conexão com o banco de dados. Verifique a internet e tente de novo.';
+  if(c==='aborted'||c==='failed-precondition') return 'Conflito ao gravar (os dados mudaram). Tente novamente.';
+  return 'Não foi possível concluir a operação. Tente novamente.';
+}
+function ask(msg,okLabel,danger){
+  return new Promise(res=>{
+    const el=$('#confirm');
+    el.innerHTML='<div class="box" role="dialog"><p>'+esc(msg)+'</p><div class="row"><button class="btn" data-act="c-no">Voltar</button><button class="btn '+(danger===false?'primary':'danger')+'" data-act="c-yes">'+esc(okLabel||'Confirmar')+'</button></div></div>';
+    el.hidden=false;
+    S.confirmRes=v=>{el.hidden=true;S.confirmRes=null;res(v)};
+  });
+}
+
+/* ---------- modal ---------- */
+function openModal(title,body,onSave,opts){
+  opts=opts||{};
+  S.modal={onSave,onInput:opts.onInput||null,busy:false};
+  const m=$('#modal');
+  m.innerHTML='<div class="sheet-m" role="dialog" aria-modal="true"><header><h2>'+esc(title)+'</h2><button class="xbtn" data-act="m-close" aria-label="Fechar">×</button></header><div class="body"><div id="m_err" class="err" hidden></div>'+body+'</div><footer><button class="btn" data-act="m-close">Cancelar</button><button class="btn primary" data-act="m-save">'+esc(opts.saveLabel||'Salvar')+'</button></footer></div>';
+  m.hidden=false;document.body.style.overflow='hidden';
+  if(opts.onOpen)opts.onOpen();
+}
+function closeModal(){const m=$('#modal');m.hidden=true;m.innerHTML='';S.modal=null;document.body.style.overflow=''}
+function setErr(msg){const e=$('#m_err');if(!e)return;e.textContent=msg||'';e.hidden=!msg}
+const val=id=>{const n=$('#'+id);return n?String(n.value||'').trim():''};
+const opt=(v,l,sel)=>'<option value="'+esc(v)+'"'+(sel?' selected':'')+'>'+esc(l)+'</option>';
+
+/* ---------- banco (Firebase Firestore) ---------- */
+let auth=null,fdb=null,unsubs=[];
+const COLS=['excursoes','clientes','reservas','lancamentos'];
+const nowISO=()=>new Date().toISOString();
+async function addDoc(n,data){const ref=await fsAddDoc(collection(fdb,n),data);return ref.id}
+async function upd(n,id,data){await updateDoc(doc(fdb,n,id),data)}
+
+/* O campo "ocupadas" da excursão guarda a soma dos passageiros das reservas ativas.
+   Toda gravação que muda vagas roda numa transação: se duas pessoas reservarem ao mesmo
+   tempo, o Firestore repete uma delas e a regra de capacidade é conferida de novo. */
+async function salvarExcursaoEdit(id,dados){
+  const ref=doc(fdb,'excursoes',id);
+  await runTransaction(fdb,async tx=>{
+    const s=await tx.get(ref);
+    if(!s.exists()) throw new Err('Excursão não encontrada.');
+    const oc=Number(s.data().ocupadas)||0;
+    if(dados.capacidade<oc) throw new Err('Já existem '+oc+' passageiros reservados; a capacidade não pode ser menor.');
+    tx.update(ref,dados);
+  });
+}
+async function gravarReserva(rid,dados,novoCli,lanc){
+  const resRef=rid?doc(fdb,'reservas',rid):doc(collection(fdb,'reservas'));
+  const cliRef=novoCli?doc(collection(fdb,'clientes')):null;
+  const lanRef=lanc?doc(collection(fdb,'lancamentos')):null;
+  await runTransaction(fdb,async tx=>{
+    const exNewRef=doc(fdb,'excursoes',dados.excursaoId);
+    const sNew=await tx.get(exNewRef);
+    if(!sNew.exists()) throw new Err('Excursão não encontrada.');
+    const exN=sNew.data();
+    if(exN.status==='cancelada') throw new Err('Esta excursão está cancelada.');
+    let old=null;
+    if(rid){const sr=await tx.get(resRef);old=sr.exists()?sr.data():null;if(!old) throw new Err('Reserva não encontrada.');if(old.status==='cancelada') throw new Err('Reative a reserva antes de editar.')}
+    let oc=Number(exN.ocupadas)||0,exOldRef=null,exOldData=null;
+    if(old){
+      if(old.excursaoId===dados.excursaoId) oc-=Number(old.qtd)||0;
+      else{exOldRef=doc(fdb,'excursoes',old.excursaoId);const so=await tx.get(exOldRef);if(so.exists())exOldData=so.data()}
+    }
+    const cap=Number(exN.capacidade)||0;
+    if(oc+dados.qtd>cap) throw new Err('Não há vagas suficientes: restam '+Math.max(0,cap-oc)+' de '+cap+'.');
+    /* escritas só depois de todas as leituras */
+    if(exOldRef&&exOldData) tx.update(exOldRef,{ocupadas:Math.max(0,(Number(exOldData.ocupadas)||0)-(Number(old.qtd)||0))});
+    tx.update(exNewRef,{ocupadas:oc+dados.qtd});
+    const d=Object.assign({},dados);
+    if(cliRef){tx.set(cliRef,novoCli);d.clienteId=cliRef.id}
+    if(rid) tx.update(resRef,d); else tx.set(resRef,Object.assign({status:'ativa',criadoEm:nowISO()},d));
+    if(lanRef) tx.set(lanRef,Object.assign({},lanc,{reservaId:resRef.id}));
+  });
+  return resRef.id;
+}
+async function statusReserva(rid,novo){
+  const rr=doc(fdb,'reservas',rid);
+  await runTransaction(fdb,async tx=>{
+    const rs=await tx.get(rr);
+    if(!rs.exists()) throw new Err('Reserva não encontrada.');
+    const r=rs.data();
+    if(r.status===novo) return;
+    const er=doc(fdb,'excursoes',r.excursaoId);
+    const es=await tx.get(er);
+    if(!es.exists()) throw new Err('Excursão não encontrada.');
+    const e=es.data(),q=Number(r.qtd)||0;
+    let oc=Number(e.ocupadas)||0;
+    if(novo==='ativa'){
+      if(e.status==='cancelada') throw new Err('A excursão desta reserva está cancelada. Reative a excursão primeiro.');
+      if(oc+q>(Number(e.capacidade)||0)) throw new Err('Não há vagas suficientes: restam '+Math.max(0,e.capacidade-oc)+' de '+e.capacidade+'.');
+      oc+=q;tx.update(rr,{status:'ativa'});
+    }else{
+      oc=Math.max(0,oc-q);tx.update(rr,{status:'cancelada',canceladaEm:nowISO()});
+    }
+    tx.update(er,{ocupadas:oc});
+  });
+}
+function desassinar(){unsubs.forEach(u=>{try{u()}catch(_){}});unsubs=[];COLS.forEach(n=>{S[n]=[];S.loaded[n]=false})}
+function assinar(){
+  desassinar();S.err='';
+  COLS.forEach(name=>{
+    unsubs.push(onSnapshot(collection(fdb,name),snap=>{
+      S[name]=snap.docs.map(d=>Object.assign({},d.data(),{id:d.id}));
+      S.loaded[name]=true;S.err='';render();
+    },e=>{S.err=errMsg(e);render()}));
+  });
+}
+function startFirebase(){
+  const app=initializeApp(firebaseConfig);
+  auth=getAuth(app);
+  try{fdb=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})})}
+  catch(_){fdb=getFirestore(app)}
+  onAuthStateChanged(auth,user=>{
+    S.authChecked=true;S.user=user?{email:user.email}:null;
+    if(user)assinar();else desassinar();
+    render();
+  });
+}
+function baixarArquivo(nome,conteudo,tipo){
+  const blob=new Blob([conteudo],{type:tipo});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=nome;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+/* ---------- renderização ---------- */
+function vSetup(){
+  return '<div class="card empty"><h3>Configuração pendente</h3><p>Abra o arquivo <b>public/index.html</b>, localize o bloco <b>firebaseConfig</b> no início do script e cole os dados do seu projeto Firebase. O passo a passo está no arquivo LEIA-ME.md.</p></div>';
+}
+function vLogin(){
+  return '<div class="card login"><h2>Entrar</h2><p class="muted small">Acesso restrito a usuários autorizados.</p>'
+   +'<label class="fld"><span>E-mail</span><input id="l_email" type="email" autocomplete="username" inputmode="email" value="'+esc(S.loginEmail)+'"></label>'
+   +'<label class="fld"><span>Senha</span><input id="l_senha" type="password" autocomplete="current-password"></label>'
+   +(S.loginErr?'<div class="err">'+esc(S.loginErr)+'</div>':'')
+   +'<button class="btn primary block" data-act="login">Entrar</button>'
+   +'<button class="btn block" style="margin-top:8px" data-act="reset">Esqueci a senha</button></div>';
+}
+function render(){
+  try{
+    C=compute();
+    const ae=document.activeElement;
+    const keep=ae&&ae.id==='busca'?ae.selectionStart:null;
+    const logged=!!S.user&&CONFIG_OK;
+    $('#nav').hidden=!logged;$('#btnSair').hidden=!logged;
+    $('#nav').innerHTML=logged?NAV.map(n=>'<button data-act="tab" data-id="'+n[0]+'" class="'+(S.tab===n[0]?'on':'')+'" aria-label="'+n[1]+'">'+ic(n[0])+'<span>'+n[1]+'</span></button>').join(''):'';
+    let html;
+    const all=COLS.every(k=>S.loaded[k]);
+    if(!CONFIG_OK){html=vSetup();$('#sub').textContent='Configuração pendente'}
+    else if(S.fatal){html='<div class="card empty"><h3>Erro ao iniciar</h3><p>'+esc(S.fatal)+'</p></div>';$('#sub').textContent='Erro'}
+    else if(!S.authChecked){html='<div class="empty">Carregando…</div>';$('#sub').textContent='Carregando…'}
+    else if(!S.user){html=vLogin();$('#sub').textContent='Acesso restrito'}
+    else if(S.err){html='<div class="card empty"><h3>Não foi possível ler os dados</h3><p>'+esc(S.err)+'</p></div>';$('#sub').textContent=S.user.email}
+    else if(!all){html='<div class="empty">Carregando dados…</div>';$('#sub').textContent='Sincronizando…'}
+    else{
+      $('#sub').textContent=S.user.email;
+      html=({inicio:vInicio,excursoes:vExcursoes,clientes:vClientes,reservas:vReservas,fin:vFin,rel:vRel}[S.tab])();
+    }
+    $('#view').innerHTML=html;
+    if(keep!=null){const n=$('#busca');if(n){n.focus();try{n.setSelectionRange(keep,keep)}catch(_){}}}
+  }catch(e){
+    console.error(e);
+    $('#view').innerHTML='<div class="card empty"><h3>Erro ao exibir a tela</h3><p>Recarregue a página. Seus dados continuam salvos.</p></div>';
+  }
+}
+
+const empty=(t,p,btn)=>'<div class="card empty"><h3>'+esc(t)+'</h3><p>'+esc(p)+'</p>'+(btn||'')+'</div>';
+const chips=(path,cur,items)=>'<div class="chips">'+items.map(i=>'<button class="chip '+(String(cur)===i[0]?'on':'')+'" data-act="set" data-path="'+path+'" data-val="'+esc(i[0])+'">'+esc(i[1])+'</button>').join('')+'</div>';
+const searchBox=(path,v,ph)=>'<input id="busca" class="search" type="search" data-bind="'+path+'" value="'+esc(v)+'" placeholder="'+esc(ph)+'" autocomplete="off">';
+const barHtml=(oc,cap)=>{const p=cap>0?Math.min(100,Math.round(oc/cap*100)):0;return '<div class="bar '+(oc>=cap&&cap>0?'full':'')+'"><i style="width:'+p+'%"></i></div>'};
+
+/* ---------- INÍCIO ---------- */
+function vInicio(){
+  const t=today();
+  const resA=S.reservas.filter(resAtiva);
+  const pax=sum(resA,r=>r.qtd), vendas=sum(resA,r=>r.total), pend=sum(resA,r=>saldo(r));
+  const lanc=S.lancamentos.filter(l=>l.status!=='cancelado');
+  const recebido=sum(lanc.filter(l=>l.tipo==='receita'),l=>l.valor);
+  const desp=sum(lanc.filter(l=>l.tipo==='despesa'),l=>l.valor);
+  const lucro=recebido-desp, previsto=recebido+pend-desp;
+  const prox=S.excursoes.filter(e=>e.status!=='cancelada'&&e.data>=t).sort(byDate);
+  const vagas=sum(prox,e=>vagasLivres(e));
+  if(!S.excursoes.length&&!S.clientes.length){
+    return '<div class="card empty"><h3>Bem-vindo ao CRM Excursões Península</h3><p>Nenhum dado cadastrado ainda. Comece criando a primeira excursão; depois cadastre clientes, lance reservas e registre os recebimentos.</p>'+W('<button class="btn primary" data-act="ex-new">Cadastrar primeira excursão</button>')+'</div>';
+  }
+  let h='<div class="stats">'
+   +'<div class="stat blue"><span>Próximas excursões</span><b>'+prox.length+'</b></div>'
+   +'<div class="stat"><span>Passageiros (reservas ativas)</span><b>'+pax+'</b></div>'
+   +'<div class="stat"><span>Vagas livres (próximas)</span><b>'+vagas+'</b></div>'
+   +'<div class="stat blue"><span>Vendas (total reservado)</span><b>'+money(vendas)+'</b></div>'
+   +'<div class="stat green"><span>Recebido</span><b>'+money(recebido)+'</b></div>'
+   +'<div class="stat amber"><span>Pagamentos pendentes</span><b>'+money(pend)+'</b></div>'
+   +'<div class="stat red"><span>Despesas</span><b>'+money(desp)+'</b></div>'
+   +'<div class="stat '+(lucro>=0?'green':'red')+'"><span>Lucro (recebido − despesas)</span><b class="'+(lucro>=0?'pos':'neg')+'">'+money(lucro)+'</b><small>Previsto: '+money(previsto)+'</small></div>'
+   +'</div>';
+  h+=W('<div class="row wrap" style="margin-top:12px"><button class="btn primary" data-act="res-new">Nova reserva</button><button class="btn teal" data-act="rec-new">Receber pagamento</button><button class="btn" data-act="ex-new">Nova excursão</button></div>');
+  h+='<div class="sec"><h2>Próximas excursões</h2></div>';
+  if(!prox.length) h+=empty('Nenhuma excursão futura','Cadastre uma excursão com data de hoje em diante.');
+  prox.slice(0,5).forEach(e=>{
+    const oc=C.ocup[e.id]||0;
+    h+='<div class="card"><div class="row between"><h3>'+esc(e.nome)+'</h3><span class="small muted">'+fmtDate(e.data)+' · '+esc(e.saida)+'</span></div>'+barHtml(oc,e.capacidade)+'<div class="row between small muted"><span>'+oc+' de '+e.capacidade+' passageiros</span><span>'+vagasLivres(e)+' vagas livres</span></div></div>';
+  });
+  const dev=resA.filter(r=>saldo(r)>0).sort((a,b)=>saldo(b)-saldo(a)).slice(0,5);
+  h+='<div class="sec"><h2>Maiores saldos a receber</h2></div>';
+  if(!dev.length) h+=empty('Sem pendências','Nenhuma reserva ativa com saldo devedor.');
+  else h+='<div class="card">'+dev.map(r=>{const c=C.CL[r.clienteId]||{},e=C.EX[r.excursaoId]||{};return '<div class="pline"><span>'+esc(c.nome||'Cliente removido')+'<br><span class="small muted">'+esc(e.nome||'')+' · '+fmtDate(e.data)+'</span></span><b class="neg">'+money(saldo(r))+'</b></div>'}).join('')+'</div>';
+  return h;
+}
+
+/* ---------- EXCURSÕES ---------- */
+function exBadge(e){
+  if(e.status==='cancelada') return '<span class="badge b-bad">Cancelada</span>';
+  if(e.data<today()) return '<span class="badge b-mute">Encerrada</span>';
+  if(vagasLivres(e)===0) return '<span class="badge b-warn">Lotada</span>';
+  return '<span class="badge b-ok">Ativa</span>';
+}
+function vExcursoes(){
+  const q=norm(S.q.excursoes),t=today(),f=S.f.ex;
+  let l=S.excursoes.filter(e=>!q||norm(e.nome+' '+e.local+' '+fmtDate(e.data)).includes(q));
+  l=l.filter(e=>f==='todas'?true:f==='canceladas'?e.status==='cancelada':f==='passadas'?(e.status!=='cancelada'&&e.data<t):(e.status!=='cancelada'&&e.data>=t));
+  l.sort(f==='proximas'?byDate:(a,b)=>byDate(b,a));
+  let h='<div class="row between" style="margin-bottom:10px"><h2 style="font-size:18px">Excursões</h2>'+W('<button class="btn primary" data-act="ex-new">+ Nova</button>')+'</div>';
+  h+=searchBox('q.excursoes',S.q.excursoes,'Buscar por nome, local ou data');
+  h+=chips('f.ex',f,[['proximas','Próximas'],['passadas','Passadas'],['canceladas','Canceladas'],['todas','Todas']]);
+  if(!l.length) return h+empty('Nenhuma excursão encontrada',S.excursoes.length?'Ajuste a busca ou o filtro.':'Cadastre a primeira excursão para começar.');
+  l.forEach(e=>{
+    const oc=C.ocup[e.id]||0,canc=e.status==='cancelada';
+    h+='<article class="card"><div class="row between" style="align-items:flex-start"><div><h3>'+esc(e.nome)+'</h3><p class="small muted">'+fmtDate(e.data)+' · saída '+esc(e.saida)+(e.retorno?' · retorno '+esc(e.retorno):'')+'</p></div>'+exBadge(e)+'</div>'
+     +'<p class="small" style="margin-top:6px">Saída: '+esc(e.local)+'</p>'
+     +barHtml(oc,e.capacidade)+'<div class="row between small muted"><span>'+oc+' de '+e.capacidade+' passageiros</span><span>'+(canc?'—':vagasLivres(e)+' vagas livres')+'</span></div>'
+     +'<div class="row between" style="margin-top:6px"><b>'+money(e.preco)+' <span class="small muted" style="font-weight:500">por passageiro</span></b></div>'
+     +(e.obs?'<p class="small muted" style="margin-top:4px">'+esc(e.obs)+'</p>':'')
+     +'<div class="actions">'
+     +(canc?'':'<button class="btn sm" data-act="ex-res" data-id="'+e.id+'">Ver reservas</button>')
+     +W((canc?'':'<button class="btn sm teal" data-act="res-new" data-ex="'+e.id+'">Reservar</button><button class="btn sm" data-act="ex-edit" data-id="'+e.id+'">Editar</button><button class="btn sm danger" data-act="ex-cancel" data-id="'+e.id+'">Cancelar</button>')+(canc?'<button class="btn sm" data-act="ex-reativar" data-id="'+e.id+'">Reativar</button>':''))
+     +'</div></article>';
+  });
+  return h;
+}
+function formExcursao(id){
+  const e=id?C.EX[id]:null,ocup=e?(C.ocup[id]||0):0;
+  openModal(e?'Editar excursão':'Nova excursão',
+   '<label class="fld"><span>Nome da excursão / parque</span><input id="f_nome" maxlength="80" value="'+esc(e&&e.nome)+'" placeholder="Ex.: Parque aquático"></label>'
+   +'<div class="grid2"><label class="fld"><span>Data</span><input id="f_data" type="date" value="'+esc(e&&e.data)+'"></label><label class="fld"><span>Capacidade (vagas)</span><input id="f_cap" type="number" min="1" step="1" inputmode="numeric" value="'+(e?e.capacidade:'')+'"></label></div>'
+   +'<div class="grid2"><label class="fld"><span>Horário de saída</span><input id="f_saida" type="time" value="'+esc(e&&e.saida)+'"></label><label class="fld"><span>Retorno (opcional)</span><input id="f_ret" type="time" value="'+esc(e&&e.retorno)+'"></label></div>'
+   +'<label class="fld"><span>Local de saída</span><input id="f_local" maxlength="120" value="'+esc(e&&e.local)+'" placeholder="Ex.: Praça central"></label>'
+   +'<label class="fld"><span>Preço por passageiro (R$)</span><input id="f_preco" inputmode="decimal" value="'+(e?inputMoney(e.preco):'')+'" placeholder="0,00"></label>'
+   +'<label class="fld"><span>Observações (opcional)</span><textarea id="f_obs" rows="2">'+esc(e&&e.obs)+'</textarea></label>',
+   async()=>{
+     const nome=val('f_nome'),data=val('f_data'),saida=val('f_saida'),ret=val('f_ret'),local=val('f_local'),cap=parseInt(val('f_cap'),10),preco=parseCents(val('f_preco')),obs=val('f_obs');
+     if(!nome) throw new Err('Informe o nome da excursão.');
+     if(!data) throw new Err('Informe a data.');
+     if(!saida) throw new Err('Informe o horário de saída.');
+     if(!local) throw new Err('Informe o local de saída.');
+     if(!(cap>=1)) throw new Err('A capacidade deve ser de pelo menos 1 vaga.');
+     if(isNaN(preco)) throw new Err('Informe um preço válido, por exemplo 89,90.');
+     if(e&&cap<ocup) throw new Err('Já existem '+ocup+' passageiros reservados; a capacidade não pode ser menor.');
+     const dados={nome,data,saida,retorno:ret,local,capacidade:cap,preco,obs};
+     if(e) await salvarExcursaoEdit(id,dados);
+     else await addDoc('excursoes',Object.assign({status:'ativa',ocupadas:0,criadoEm:nowISO()},dados));
+     closeModal();toast('Excursão salva.');
+   });
+}
+
+/* ---------- CLIENTES / PASSAGEIROS ---------- */
+function vClientes(){
+  const q=norm(S.q.clientes);
+  let h='<div class="row between" style="margin-bottom:10px"><h2 style="font-size:18px">Clientes e passageiros</h2>'+(S.f.cli==='clientes'?W('<button class="btn primary" data-act="cli-new">+ Novo</button>'):'')+'</div>';
+  h+=chips('f.cli',S.f.cli,[['clientes','Clientes (responsáveis)'],['passageiros','Passageiros'],['inativos','Inativos']]);
+  h+=searchBox('q.clientes',S.q.clientes,S.f.cli==='passageiros'?'Buscar passageiro, responsável ou excursão':'Buscar por nome, telefone ou cidade');
+  if(S.f.cli==='passageiros'){
+    const rows=[];
+    S.reservas.filter(resAtiva).forEach(r=>{const c=C.CL[r.clienteId]||{},e=C.EX[r.excursaoId]||{};(r.passageiros||[]).forEach(n=>rows.push({n,resp:c.nome||'',tel:c.telefone||'',ex:e.nome||'',data:e.data||''}))});
+    const l=rows.filter(x=>!q||norm(x.n+' '+x.resp+' '+x.ex).includes(q)).sort((a,b)=>a.n.localeCompare(b.n,'pt-BR'));
+    if(!l.length) return h+empty('Nenhum passageiro listado','Os nomes dos passageiros são informados ao criar ou editar uma reserva.');
+    return h+'<div class="card">'+l.map(x=>'<div class="pline"><span><b>'+esc(x.n)+'</b><br><span class="small muted">Resp.: '+esc(x.resp)+'</span></span><span class="right small muted">'+esc(x.ex)+'<br>'+fmtDate(x.data)+'</span></div>').join('')+'</div>';
+  }
+  const inativos=S.f.cli==='inativos';
+  const l=S.clientes.filter(c=>(c.status==='inativo')===inativos).filter(c=>!q||norm(c.nome+' '+c.telefone+' '+c.cidade).includes(q)).sort((a,b)=>String(a.nome).localeCompare(String(b.nome),'pt-BR'));
+  if(!l.length) return h+empty(inativos?'Nenhum cliente inativo':'Nenhum cliente encontrado',S.clientes.length?'Ajuste a busca.':'Cadastre o primeiro cliente ou crie-o direto na reserva.');
+  l.forEach(c=>{
+    const rs=S.reservas.filter(r=>r.clienteId===c.id&&resAtiva(r));
+    const dev=sum(rs,r=>saldo(r));
+    h+='<article class="card"><div class="row between" style="align-items:flex-start"><div><h3>'+esc(c.nome)+'</h3><p class="small muted">'+(c.telefone?esc(c.telefone):'Sem telefone')+(c.cidade?' · '+esc(c.cidade):'')+'</p></div>'+(dev>0?'<span class="badge b-warn">Deve '+money(dev)+'</span>':'<span class="badge b-info">'+rs.length+' reserva(s)</span>')+'</div>'
+     +(c.documento?'<p class="small muted">Documento: '+esc(c.documento)+'</p>':'')+(c.obs?'<p class="small muted">'+esc(c.obs)+'</p>':'')
+     +W('<div class="actions">'+(inativos?'<button class="btn sm" data-act="cli-reativar" data-id="'+c.id+'">Reativar</button>':'<button class="btn sm teal" data-act="res-new" data-cli="'+c.id+'">Nova reserva</button><button class="btn sm" data-act="cli-edit" data-id="'+c.id+'">Editar</button><button class="btn sm danger" data-act="cli-inativar" data-id="'+c.id+'">Inativar</button>')+'</div>')
+     +'</article>';
+  });
+  return h;
+}
+function formCliente(id){
+  const c=id?C.CL[id]:null;
+  openModal(c?'Editar cliente':'Novo cliente',
+   '<label class="fld"><span>Nome completo</span><input id="f_nome" maxlength="100" value="'+esc(c&&c.nome)+'"></label>'
+   +'<label class="fld"><span>Telefone / WhatsApp</span><input id="f_tel" type="tel" inputmode="tel" maxlength="30" value="'+esc(c&&c.telefone)+'" placeholder="(98) 90000-0000"></label>'
+   +'<div class="grid2"><label class="fld"><span>Documento (opcional)</span><input id="f_doc" maxlength="30" value="'+esc(c&&c.documento)+'"></label><label class="fld"><span>Cidade / bairro</span><input id="f_cid" maxlength="60" value="'+esc(c&&c.cidade)+'"></label></div>'
+   +'<label class="fld"><span>Observações (opcional)</span><textarea id="f_obs" rows="2">'+esc(c&&c.obs)+'</textarea></label>',
+   async()=>{
+     const nome=val('f_nome');if(!nome) throw new Err('Informe o nome do cliente.');
+     const d={nome,telefone:val('f_tel'),documento:val('f_doc'),cidade:val('f_cid'),obs:val('f_obs')};
+     if(c) await upd('clientes',id,d); else await addDoc('clientes',Object.assign({status:'ativo',criadoEm:nowISO()},d));
+     closeModal();toast('Cliente salvo.');
+   });
+}
+
+/* ---------- RESERVAS ---------- */
+const waLink=(tel,msg)=>{let d=String(tel||'').replace(/\D/g,'');if(!d)return '';if(d.length<=11)d='55'+d;return 'https://wa.me/'+d+'?text='+encodeURIComponent(msg)};
+function vReservas(){
+  const q=norm(S.q.reservas),f=S.f.res;
+  let l=S.reservas.map(r=>({r,c:C.CL[r.clienteId]||{},e:C.EX[r.excursaoId]||{}}));
+  if(S.f.resEx) l=l.filter(x=>x.r.excursaoId===S.f.resEx);
+  l=l.filter(x=>!q||norm((x.c.nome||'')+' '+(x.e.nome||'')+' '+(x.r.passageiros||[]).join(' ')).includes(q));
+  l=l.filter(x=>{const a=resAtiva(x.r);return f==='todas'?true:f==='ativas'?a:f==='saldo'?(a&&saldo(x.r)>0):!a});
+  l.sort((a,b)=>byDate(b.e,a.e)||String(b.r.criadoEm).localeCompare(String(a.r.criadoEm)));
+  let h='<div class="row between" style="margin-bottom:10px"><h2 style="font-size:18px">Reservas</h2>'+W('<button class="btn primary" data-act="res-new">+ Nova</button>')+'</div>';
+  h+=searchBox('q.reservas',S.q.reservas,'Buscar por cliente, excursão ou passageiro');
+  h+='<label class="fld"><span>Excursão</span><select data-bind="f.resEx">'+opt('','Todas as excursões',!S.f.resEx)+S.excursoes.slice().sort((a,b)=>byDate(b,a)).map(e=>opt(e.id,fmtDate(e.data)+' · '+e.nome,S.f.resEx===e.id)).join('')+'</select></label>';
+  h+=chips('f.res',f,[['ativas','Ativas'],['saldo','Com saldo'],['canceladas','Canceladas'],['todas','Todas']]);
+  if(!l.length) return h+empty('Nenhuma reserva encontrada',S.reservas.length?'Ajuste a busca ou os filtros.':'Crie a primeira reserva.');
+  l.forEach(({r,c,e})=>{
+    const a=resAtiva(r),s=saldo(r);
+    const cancelada=r.status==='cancelada',excCanc=e.status==='cancelada';
+    h+='<article class="card"><div class="row between" style="align-items:flex-start"><div><h3>'+esc(c.nome||'Cliente removido')+'</h3><p class="small muted">'+esc(e.nome||'Excursão removida')+' · '+fmtDate(e.data)+'</p></div>'
+     +(cancelada?'<span class="badge b-bad">Cancelada</span>':excCanc?'<span class="badge b-bad">Excursão cancelada</span>':s>0?'<span class="badge b-warn">Pendente</span>':'<span class="badge b-ok">Quitada</span>')+'</div>'
+     +'<div class="grid2" style="margin-top:8px"><div><span class="small muted">Passageiros</span><br><b>'+r.qtd+'</b></div><div><span class="small muted">Valor total</span><br><b>'+money(r.total)+'</b></div><div><span class="small muted">Valor pago</span><br><b class="pos">'+money(pago(r))+'</b></div><div><span class="small muted">Saldo devedor</span><br><b class="'+(a&&s>0?'neg':'')+'">'+money(a?s:0)+'</b></div></div>'
+     +((r.passageiros||[]).length?'<p class="small muted" style="margin-top:8px">'+esc((r.passageiros||[]).join(', '))+'</p>':'')
+     +(r.obs?'<p class="small muted">'+esc(r.obs)+'</p>':'')
+     +'<div class="actions">'
+     +W((a&&s>0?'<button class="btn sm teal" data-act="rec-new" data-id="'+r.id+'">Receber</button>':'')+(cancelada?'<button class="btn sm" data-act="res-reativar" data-id="'+r.id+'">Reativar</button>':'<button class="btn sm" data-act="res-edit" data-id="'+r.id+'">Editar</button><button class="btn sm danger" data-act="res-cancel" data-id="'+r.id+'">Cancelar</button>'))
+     +((a&&s>0&&c.telefone)?'<a class="btn sm" target="_blank" rel="noopener" href="'+esc(waLink(c.telefone,'Olá, '+c.nome+'! Passando para lembrar do saldo de '+money(s)+' da excursão '+(e.nome||'')+' ('+fmtDate(e.data)+'). Obrigado!'))+'">Cobrar no WhatsApp</a>':'')
+     +'</div></article>';
+  });
+  return h;
+}
+function formReserva(o){
+  o=o||{};
+  const r=o.id?C.RS[o.id]:null;
+  const t=today();
+  const exs=S.excursoes.filter(e=>e.status!=='cancelada'&&(e.data>=t||(r&&r.excursaoId===e.id))).sort(byDate);
+  if(!exs.length){toast('Cadastre uma excursão futura antes de criar reservas.',true);return}
+  const cls=S.clientes.filter(c=>c.status!=='inativo'||(r&&r.clienteId===c.id)).sort((a,b)=>String(a.nome).localeCompare(String(b.nome),'pt-BR'));
+  const exSel=r?r.excursaoId:(o.ex||exs[0].id), clSel=r?r.clienteId:(o.cli||'');
+  let touched=false;
+  if(r){const e0=C.EX[r.excursaoId];touched=!e0||Number(r.total)!==e0.preco*r.qtd}
+  const body='<label class="fld"><span>Excursão</span><select id="f_ex">'+exs.map(e=>opt(e.id,fmtDate(e.data)+' · '+e.nome,e.id===exSel)).join('')+'</select></label>'
+   +'<label class="fld"><span>Responsável (cliente)</span><select id="f_cl">'+opt('','Selecione…',!clSel)+cls.map(c=>opt(c.id,c.nome+(c.telefone?' · '+c.telefone:''),c.id===clSel)).join('')+opt('__novo__','+ Cadastrar novo cliente',false)+'</select></label>'
+   +'<div id="novoCl" hidden><label class="fld"><span>Nome do novo cliente</span><input id="f_cnome" maxlength="100"></label><label class="fld"><span>Telefone / WhatsApp</span><input id="f_ctel" type="tel" inputmode="tel" maxlength="30"></label></div>'
+   +'<label class="fld"><span>Quantidade de passageiros</span><input id="f_qtd" type="number" min="1" step="1" inputmode="numeric" value="'+(r?r.qtd:'')+'"></label>'
+   +'<p class="hint" id="vagasHint"></p>'
+   +'<label class="fld"><span>Nomes dos passageiros (um por linha, opcional)</span><textarea id="f_pass" rows="4">'+esc((r&&r.passageiros||[]).join('\n'))+'</textarea></label>'
+   +'<label class="fld"><span>Valor total (R$)</span><input id="f_tot" inputmode="decimal" value="'+(r?inputMoney(r.total):'')+'" placeholder="0,00"></label>'
+   +(r?'':'<div class="grid2"><label class="fld"><span>Pago agora (opcional)</span><input id="f_sinal" inputmode="decimal" placeholder="0,00"></label><label class="fld"><span>Forma</span><select id="f_forma">'+FORMAS.map(f=>opt(f,f,false)).join('')+'</select></label></div>')
+   +'<label class="fld"><span>Observações (opcional)</span><textarea id="f_obs" rows="2">'+esc(r&&r.obs)+'</textarea></label>';
+  const update=src=>{
+    const ex=C.EX[val('f_ex')],qtd=parseInt(val('f_qtd'),10)||0;
+    $('#novoCl').hidden=val('f_cl')!=='__novo__';
+    if(src==='f_tot')touched=true;
+    if(ex){
+      const oc=C.ocup[ex.id]||0,extra=(r&&r.status!=='cancelada'&&r.excursaoId===ex.id)?r.qtd:0;
+      const livres=Math.max(0,ex.capacidade-oc+extra),h=$('#vagasHint');
+      const nomes=val('f_pass')?val('f_pass').split('\n').map(s=>s.trim()).filter(Boolean).length:0;
+      let txt='Vagas disponíveis: '+livres+' de '+ex.capacidade+' · preço '+money(ex.preco)+' por passageiro';
+      let bad=false;
+      if(qtd>livres){txt='Excede as vagas: restam apenas '+livres+' de '+ex.capacidade+'.';bad=true}
+      else if(nomes>qtd&&qtd>0){txt='Há mais nomes ('+nomes+') do que passageiros ('+qtd+').';bad=true}
+      h.textContent=txt;h.className='hint'+(bad?' bad':'');
+      if(!touched&&src!=='f_tot')$('#f_tot').value=qtd>0?inputMoney(ex.preco*qtd):'';
+    }
+  };
+  openModal(r?'Editar reserva':'Nova reserva',body,async()=>{
+    const exId=val('f_ex'),ex=C.EX[exId];
+    let clId=val('f_cl');
+    const qtd=parseInt(val('f_qtd'),10),total=parseCents(val('f_tot'));
+    const nomes=val('f_pass')?val('f_pass').split('\n').map(s=>s.trim()).filter(Boolean):[];
+    if(!ex) throw new Err('Selecione a excursão.');
+    if(!clId) throw new Err('Selecione o responsável pela reserva.');
+    if(clId==='__novo__'&&!val('f_cnome')) throw new Err('Informe o nome do novo cliente.');
+    if(!(qtd>=1)) throw new Err('Informe a quantidade de passageiros (mínimo 1).');
+    if(nomes.length>qtd) throw new Err('Há mais nomes de passageiros do que a quantidade informada.');
+    if(isNaN(total)) throw new Err('Informe um valor total válido.');
+    if(r&&total<pago(r)) throw new Err('O valor total não pode ser menor que o já pago ('+money(pago(r))+').');
+    let sinal=0;
+    if(!r&&val('f_sinal')){sinal=parseCents(val('f_sinal'));if(isNaN(sinal)) throw new Err('Valor pago inválido.');if(sinal>total) throw new Err('O valor pago não pode ser maior que o valor total.')}
+    if(r&&r.status==='cancelada') throw new Err('Reative a reserva antes de editar.');
+    const novoCli=clId==='__novo__'?{nome:val('f_cnome'),telefone:val('f_ctel'),documento:'',cidade:'',obs:'',status:'ativo',criadoEm:nowISO()}:null;
+    const d={excursaoId:exId,clienteId:clId,qtd,passageiros:nomes,total,obs:val('f_obs')};
+    const lanc=sinal>0?{tipo:'receita',valor:sinal,data:today(),forma:val('f_forma'),descricao:'Pagamento de reserva',reservaId:'',excursaoId:'',categoria:'',obs:'',status:'ativo',criadoEm:nowISO()}:null;
+    await gravarReserva(r?r.id:null,d,novoCli,lanc);
+    closeModal();toast('Reserva salva.');
+  },{onInput:e=>update(e.target.id),onOpen:()=>update('')});
+}
+
+/* ---------- FINANCEIRO ---------- */
+function vFin(){
+  const q=norm(S.q.fin),F=S.f;
+  let l=S.lancamentos.slice();
+  if(F.finCanc!=='1') l=l.filter(x=>x.status!=='cancelado');
+  if(F.finTipo!=='todos') l=l.filter(x=>x.tipo===(F.finTipo==='rec'?'receita':'despesa'));
+  if(F.finDe) l=l.filter(x=>x.data>=F.finDe);
+  if(F.finAte) l=l.filter(x=>x.data<=F.finAte);
+  const desc=x=>{const r=x.reservaId?C.RS[x.reservaId]:null,c=r?C.CL[r.clienteId]:null;return (x.descricao||'')+' '+(c?c.nome:'')+' '+(x.categoria||'')};
+  l=l.filter(x=>!q||norm(desc(x)+' '+x.forma).includes(q));
+  l.sort((a,b)=>(b.data||'').localeCompare(a.data||'')||String(b.criadoEm).localeCompare(String(a.criadoEm)));
+  const ativos=l.filter(x=>x.status!=='cancelado');
+  const rec=sum(ativos.filter(x=>x.tipo==='receita'),x=>x.valor),dsp=sum(ativos.filter(x=>x.tipo==='despesa'),x=>x.valor),res=rec-dsp;
+  let h='<div class="row between" style="margin-bottom:10px"><h2 style="font-size:18px">Financeiro</h2></div>';
+  h+=W('<div class="grid2" style="margin-bottom:12px"><button class="btn teal" data-act="rec-new">+ Recebimento</button><button class="btn primary" data-act="desp-new">+ Despesa</button></div>');
+  h+='<div class="stats" style="margin-bottom:12px"><div class="stat green"><span>Recebido</span><b>'+money(rec)+'</b></div><div class="stat red"><span>Despesas</span><b>'+money(dsp)+'</b></div><div class="stat '+(res>=0?'green':'red')+'" style="grid-column:1/-1"><span>Resultado do período filtrado</span><b class="'+(res>=0?'pos':'neg')+'">'+money(res)+'</b></div></div>';
+  h+=searchBox('q.fin',S.q.fin,'Buscar por descrição, cliente ou categoria');
+  h+=chips('f.finTipo',F.finTipo,[['todos','Todos'],['rec','Recebimentos'],['desp','Despesas']]);
+  h+='<div class="grid2"><label class="fld"><span>De</span><input type="date" data-bind="f.finDe" value="'+esc(F.finDe)+'"></label><label class="fld"><span>Até</span><input type="date" data-bind="f.finAte" value="'+esc(F.finAte)+'"></label></div>';
+  h+='<label class="row small muted" style="margin-bottom:10px"><input type="checkbox" data-bind="f.finCanc" data-check="1" '+(F.finCanc==='1'?'checked':'')+'> Mostrar lançamentos cancelados</label>';
+  if(!l.length) return h+empty('Nenhum lançamento','Registre recebimentos de reservas e as despesas das excursões.');
+  l.forEach(x=>{
+    const r=x.reservaId?C.RS[x.reservaId]:null,c=r?C.CL[r.clienteId]:null,e=x.tipo==='despesa'?C.EX[x.excursaoId]:(r?C.EX[r.excursaoId]:null);
+    const canc=x.status==='cancelado',rc=x.tipo==='receita';
+    h+='<article class="card" style="'+(canc?'opacity:.6':'')+'"><div class="row between" style="align-items:flex-start"><div><h3>'+esc(x.descricao||(rc?'Recebimento':'Despesa'))+'</h3><p class="small muted">'+fmtDate(x.data)+' · '+esc(x.forma||'')+(x.categoria?' · '+esc(x.categoria):'')+'</p>'+(c?'<p class="small muted">Cliente: '+esc(c.nome)+'</p>':'')+(e?'<p class="small muted">Excursão: '+esc(e.nome)+' ('+fmtDate(e.data)+')</p>':'')+'</div><div class="right"><b class="'+(rc?'pos':'neg')+'">'+(rc?'+ ':'− ')+money(x.valor)+'</b>'+(canc?'<br><span class="badge b-bad">Cancelado</span>':'')+'</div></div>'
+     +W('<div class="actions">'+(canc?'<button class="btn sm" data-act="lan-reativar" data-id="'+x.id+'">Reativar</button>':'<button class="btn sm" data-act="lan-edit" data-id="'+x.id+'">Editar</button><button class="btn sm danger" data-act="lan-cancel" data-id="'+x.id+'">Cancelar</button>')+'</div>')+'</article>';
+  });
+  return h;
+}
+function formRecebimento(o){
+  o=o||{};
+  const x=o.lan?S.lancamentos.find(l=>l.id===o.lan):null;
+  const rid0=x?x.reservaId:(o.res||'');
+  const pagoSem=r=>pago(r)-((x&&x.reservaId===r.id&&x.status!=='cancelado')?x.valor:0);
+  const sd=r=>Math.max(0,r.total-pagoSem(r));
+  const rs=S.reservas.filter(r=>resAtiva(r)&&(sd(r)>0||r.id===rid0)).sort((a,b)=>String((C.CL[a.clienteId]||{}).nome).localeCompare(String((C.CL[b.clienteId]||{}).nome),'pt-BR'));
+  const label=r=>{const c=C.CL[r.clienteId]||{},e=C.EX[r.excursaoId]||{};return (c.nome||'Cliente')+' · '+fmtDate(e.data)+' '+(e.nome||'')+' · saldo '+money(sd(r))};
+  let touched=!!x;
+  const body='<label class="fld"><span>Reserva</span><select id="f_res">'+opt('','Sem reserva (recebimento avulso)',!rid0)+rs.map(r=>opt(r.id,label(r),r.id===rid0)).join('')+'</select></label>'
+   +'<p class="hint" id="resHint"></p>'
+   +'<div class="grid2"><label class="fld"><span>Valor recebido (R$)</span><input id="f_val" inputmode="decimal" value="'+(x?inputMoney(x.valor):'')+'" placeholder="0,00"></label><label class="fld"><span>Data</span><input id="f_data" type="date" value="'+esc(x?x.data:today())+'"></label></div>'
+   +'<label class="fld"><span>Forma de recebimento</span><select id="f_forma">'+FORMAS.map(f=>opt(f,f,x&&x.forma===f)).join('')+'</select></label>'
+   +'<label class="fld"><span>Descrição (obrigatória se avulso)</span><input id="f_desc" maxlength="100" value="'+esc(x&&x.descricao)+'" placeholder="Ex.: Pagamento de reserva"></label>'
+   +'<label class="fld"><span>Observações (opcional)</span><textarea id="f_obs" rows="2">'+esc(x&&x.obs)+'</textarea></label>';
+  const update=src=>{
+    if(src==='f_val')touched=true;
+    const r=C.RS[val('f_res')];
+    $('#resHint').textContent=r?'Saldo devedor desta reserva: '+money(sd(r)):'';
+    if(r&&!touched&&src==='f_res')$('#f_val').value=inputMoney(sd(r));
+  };
+  openModal(x?'Editar recebimento':'Registrar recebimento',body,async()=>{
+    const rid=val('f_res'),r=rid?C.RS[rid]:null,v=parseCents(val('f_val')),data=val('f_data');
+    if(isNaN(v)||v<=0) throw new Err('Informe um valor maior que zero.');
+    if(!data) throw new Err('Informe a data.');
+    if(r&&v>sd(r)) throw new Err('O valor é maior que o saldo devedor da reserva ('+money(sd(r))+').');
+    if(!r&&!val('f_desc')) throw new Err('Informe uma descrição para o recebimento avulso.');
+    const d={tipo:'receita',valor:v,data,forma:val('f_forma'),descricao:val('f_desc')||'Pagamento de reserva',reservaId:rid||'',excursaoId:'',categoria:'',obs:val('f_obs')};
+    if(x) await upd('lancamentos',x.id,d); else await addDoc('lancamentos',Object.assign({status:'ativo',criadoEm:nowISO()},d));
+    closeModal();toast('Recebimento registrado.');
+  },{onInput:e=>update(e.target.id),onOpen:()=>update(''),saveLabel:'Registrar'});
+}
+function formDespesa(id){
+  const x=id?S.lancamentos.find(l=>l.id===id):null;
+  const exs=S.excursoes.filter(e=>e.status!=='cancelada'||(x&&x.excursaoId===e.id)).sort((a,b)=>byDate(b,a));
+  openModal(x?'Editar despesa':'Registrar despesa',
+   '<label class="fld"><span>Descrição</span><input id="f_desc" maxlength="100" value="'+esc(x&&x.descricao)+'" placeholder="Ex.: Aluguel do ônibus"></label>'
+   +'<div class="grid2"><label class="fld"><span>Valor (R$)</span><input id="f_val" inputmode="decimal" value="'+(x?inputMoney(x.valor):'')+'" placeholder="0,00"></label><label class="fld"><span>Data</span><input id="f_data" type="date" value="'+esc(x?x.data:today())+'"></label></div>'
+   +'<label class="fld"><span>Categoria</span><select id="f_cat">'+CATS.map(c=>opt(c,c,x&&x.categoria===c)).join('')+'</select></label>'
+   +'<label class="fld"><span>Excursão relacionada (opcional)</span><select id="f_ex">'+opt('','Despesa geral (sem excursão)',!(x&&x.excursaoId))+exs.map(e=>opt(e.id,fmtDate(e.data)+' · '+e.nome,x&&x.excursaoId===e.id)).join('')+'</select></label>'
+   +'<label class="fld"><span>Forma de pagamento</span><select id="f_forma">'+FORMAS.map(f=>opt(f,f,x&&x.forma===f)).join('')+'</select></label>'
+   +'<label class="fld"><span>Observações (opcional)</span><textarea id="f_obs" rows="2">'+esc(x&&x.obs)+'</textarea></label>',
+   async()=>{
+     const v=parseCents(val('f_val')),data=val('f_data');
+     if(!val('f_desc')) throw new Err('Informe a descrição da despesa.');
+     if(isNaN(v)||v<=0) throw new Err('Informe um valor maior que zero.');
+     if(!data) throw new Err('Informe a data.');
+     const d={tipo:'despesa',valor:v,data,forma:val('f_forma'),descricao:val('f_desc'),reservaId:'',excursaoId:val('f_ex'),categoria:val('f_cat'),obs:val('f_obs')};
+     if(x) await upd('lancamentos',x.id,d); else await addDoc('lancamentos',Object.assign({status:'ativo',criadoEm:nowISO()},d));
+     closeModal();toast('Despesa registrada.');
+   },{saveLabel:'Registrar'});
+}
+
+/* ---------- RELATÓRIOS ---------- */
+function buildRel(){
+  const R=S.rel,t=R.tipo,inR=d=>(!R.de||d>=R.de)&&(!R.ate||d<=R.ate);
+  const exName=id=>{const e=C.EX[id];return e?e.nome:''};
+  const lines=[];
+  if(R.de||R.ate)lines.push('Período: '+(R.de?fmtDate(R.de):'início')+' a '+(R.ate?fmtDate(R.ate):'hoje'));
+  if(t==='embarque'){
+    const e=C.EX[R.ex];
+    if(!e) return {vazio:'Selecione uma excursão para gerar a lista de embarque.'};
+    const rs=S.reservas.filter(r=>r.excursaoId===e.id&&resAtiva(r)).sort((a,b)=>String((C.CL[a.clienteId]||{}).nome).localeCompare(String((C.CL[b.clienteId]||{}).nome),'pt-BR'));
+    const rows=[];let n=0;
+    rs.forEach(r=>{const c=C.CL[r.clienteId]||{},nomes=r.passageiros||[];for(let i=0;i<r.qtd;i++){n++;rows.push([String(n),nomes[i]||'(nome não informado)',i===0?(c.nome||'—'):'',i===0?(c.telefone||''):'',i===0?(saldo(r)>0?money(saldo(r)):'Quitado'):'','☐'])}});
+    return {titulo:'Lista de embarque',sub:[e.nome+' · '+fmtDate(e.data)+' · saída '+e.saida+(e.retorno?' · retorno '+e.retorno:''),'Local de saída: '+e.local,'Capacidade '+e.capacidade+' · Passageiros '+n+' · Vagas livres '+vagasLivres(e)],cols:[['Nº'],['Passageiro'],['Responsável'],['Telefone'],['Saldo',1],['Presente']],rows,totais:[['Total de passageiros',String(n)]]};
+  }
+  if(t==='pendencias'){
+    const rs=S.reservas.filter(r=>resAtiva(r)&&saldo(r)>0&&(!R.ex||r.excursaoId===R.ex)&&inR((C.EX[r.excursaoId]||{}).data||'')).sort((a,b)=>saldo(b)-saldo(a));
+    const rows=rs.map(r=>{const c=C.CL[r.clienteId]||{},e=C.EX[r.excursaoId]||{};return [c.nome||'—',c.telefone||'',e.nome||'',fmtDate(e.data),money(r.total),money(pago(r)),money(saldo(r))]});
+    if(R.ex)lines.unshift('Excursão: '+exName(R.ex));
+    return {titulo:'Pagamentos pendentes',sub:lines,cols:[['Cliente'],['Telefone'],['Excursão'],['Data'],['Total',1],['Pago',1],['Saldo',1]],rows,totais:[['Total a receber',money(sum(rs,r=>saldo(r)))]]};
+  }
+  if(t==='financeiro'){
+    const ls=S.lancamentos.filter(l=>{
+      if(l.status==='cancelado'||!inR(l.data||''))return false;
+      if(!R.ex)return true;
+      if(l.tipo==='despesa')return l.excursaoId===R.ex;
+      const r=C.RS[l.reservaId];return !!r&&r.excursaoId===R.ex;
+    }).sort((a,b)=>(a.data||'').localeCompare(b.data||''));
+    const rows=ls.map(l=>{const r=l.reservaId?C.RS[l.reservaId]:null,c=r?C.CL[r.clienteId]:null,e=l.tipo==='despesa'?C.EX[l.excursaoId]:(r?C.EX[r.excursaoId]:null);return [fmtDate(l.data),l.tipo==='receita'?'Recebimento':'Despesa',(l.descricao||'')+(c?' — '+c.nome:'')+(l.categoria?' ('+l.categoria+')':''),e?e.nome:'',l.forma||'',(l.tipo==='receita'?'':'− ')+money(l.valor)]});
+    const rec=sum(ls.filter(l=>l.tipo==='receita'),l=>l.valor),dsp=sum(ls.filter(l=>l.tipo==='despesa'),l=>l.valor);
+    if(R.ex)lines.unshift('Excursão: '+exName(R.ex));
+    return {titulo:'Relatório financeiro',sub:lines,cols:[['Data'],['Tipo'],['Descrição'],['Excursão'],['Forma'],['Valor',1]],rows,totais:[['Recebimentos',money(rec)],['Despesas',money(dsp)],['Resultado',money(rec-dsp)]]};
+  }
+  // resumo por excursão
+  const exs=S.excursoes.filter(e=>e.status!=='cancelada'&&(!R.ex||e.id===R.ex)&&inR(e.data||'')).sort(byDate);
+  const rows=[];let tv=0,tr=0,tp=0,td=0;
+  exs.forEach(e=>{
+    const rs=S.reservas.filter(r=>r.excursaoId===e.id&&resAtiva(r));
+    const v=sum(rs,r=>r.total),rec=sum(rs,r=>pago(r)),pen=sum(rs,r=>saldo(r));
+    const dsp=sum(S.lancamentos.filter(l=>l.status!=='cancelado'&&l.tipo==='despesa'&&l.excursaoId===e.id),l=>l.valor);
+    tv+=v;tr+=rec;tp+=pen;td+=dsp;
+    rows.push([e.nome,fmtDate(e.data),(C.ocup[e.id]||0)+'/'+e.capacidade,money(v),money(rec),money(pen),money(dsp),money(rec-dsp)]);
+  });
+  if(R.ex)lines.unshift('Excursão: '+exName(R.ex));
+  lines.push('Despesas sem excursão vinculada não entram neste resumo.');
+  return {titulo:'Resumo por excursão',sub:lines,cols:[['Excursão'],['Data'],['Ocupação'],['Vendas',1],['Recebido',1],['A receber',1],['Despesas',1],['Resultado',1]],rows,totais:[['Vendas',money(tv)],['Recebido',money(tr)],['A receber',money(tp)],['Despesas',money(td)],['Resultado (recebido − despesas)',money(tr-td)]]};
+}
+function vRel(){
+  const R=S.rel,rep=buildRel();
+  const tipos=[['embarque','Lista de embarque'],['pendencias','Pendências'],['financeiro','Financeiro'],['resumo','Resumo por excursão']];
+  let h='<div class="noprint"><div class="row between" style="margin-bottom:10px"><h2 style="font-size:18px">Relatórios</h2></div>'+chips('rel.tipo',R.tipo,tipos);
+  h+='<label class="fld"><span>Excursão</span><select data-bind="rel.ex">'+opt('',R.tipo==='embarque'?'Selecione…':'Todas as excursões',!R.ex)+S.excursoes.slice().sort((a,b)=>byDate(b,a)).map(e=>opt(e.id,fmtDate(e.data)+' · '+e.nome,R.ex===e.id)).join('')+'</select></label>';
+  if(R.tipo!=='embarque') h+='<div class="grid2"><label class="fld"><span>De</span><input type="date" data-bind="rel.de" value="'+esc(R.de)+'"></label><label class="fld"><span>Até</span><input type="date" data-bind="rel.ate" value="'+esc(R.ate)+'"></label></div>';
+  h+='<div class="grid2" style="margin-bottom:12px"><button class="btn primary" data-act="rel-print">Imprimir</button><button class="btn" data-act="rel-csv">Baixar planilha (CSV)</button></div><button class="btn block" style="margin-bottom:12px" data-act="rel-backup">Backup completo dos dados (JSON)</button></div>';
+  if(rep.vazio) return h+empty('Relatório indisponível',rep.vazio);
+  h+='<section class="card rep"><h2>CRM Excursões Península — '+esc(rep.titulo)+'</h2><p class="meta">'+rep.sub.map(esc).join('<br>')+'<br>Emitido em '+fmtNow()+'</p>';
+  if(!rep.rows.length) h+='<p class="muted">Nenhum registro para os filtros selecionados.</p>';
+  else h+='<div class="tw"><table class="tbl"><thead><tr>'+rep.cols.map(c=>'<th'+(c[1]?' class="num"':'')+'>'+esc(c[0])+'</th>').join('')+'</tr></thead><tbody>'+rep.rows.map(r=>'<tr>'+r.map((v,i)=>'<td'+(rep.cols[i][1]?' class="num"':'')+'>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+  h+='<div class="tot">'+rep.totais.map(t=>'<span>'+esc(t[0])+': <b>'+esc(t[1])+'</b></span>').join('')+'</div></section>';
+  return h;
+}
+async function baixarCsv(){
+  const rep=buildRel();
+  if(rep.vazio||!rep.rows.length){toast('Não há dados para exportar.',true);return}
+  const q=s=>'"'+String(s).replace(/"/g,'""')+'"';
+  const lines=[[rep.titulo],...rep.sub.map(s=>[s]),[],rep.cols.map(c=>c[0]),...rep.rows,[],...rep.totais];
+  baixarArquivo('relatorio-'+S.rel.tipo+'-'+today()+'.csv','\uFEFF'+lines.map(r=>r.map(q).join(';')).join('\r\n'),'text/csv;charset=utf-8');
+  toast('Arquivo gerado.');
+}
+
+/* ---------- ações ---------- */
+function setPath(p,v){const k=p.split('.');let o=S;for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v}
+async function setStatus(col_,id,data,msg){await upd(col_,id,data);toast(msg)}
+
+document.addEventListener('click',async ev=>{
+  const el=ev.target.closest('[data-act]');
+  if(!el){ if(ev.target===$('#modal'))closeModal(); return }
+  const a=el.dataset.act,id=el.dataset.id;
+  try{
+    switch(a){
+      case 'tab': S.tab=id;render();window.scrollTo(0,0);break;
+      case 'set': setPath(el.dataset.path,el.dataset.val);render();break;
+      case 'm-close': closeModal();break;
+      case 'm-save':{
+        if(!S.modal||S.modal.busy)return;
+        S.modal.busy=true;el.disabled=true;setErr('');
+        const m=S.modal;
+        try{await m.onSave()}catch(e){if(!(e instanceof Err))console.error(e);setErr(errMsg(e))}
+        finally{m.busy=false;el.disabled=false}
+        break;}
+      case 'c-yes': if(S.confirmRes)S.confirmRes(true);break;
+      case 'c-no': if(S.confirmRes)S.confirmRes(false);break;
+      case 'ex-new': formExcursao();break;
+      case 'ex-edit': formExcursao(id);break;
+      case 'ex-res': S.f.resEx=id;S.f.res='ativas';S.q.reservas='';S.tab='reservas';render();window.scrollTo(0,0);break;
+      case 'ex-cancel':{
+        const n=C.ocup[id]||0;
+        if(await ask('Cancelar esta excursão?'+(n?'\n\nAs '+n+' vagas reservadas deixam de contar nas vendas. Pagamentos já recebidos continuam no financeiro; registre estornos como despesa, se houver.':''),'Cancelar excursão'))
+          await setStatus('excursoes',id,{status:'cancelada',canceladaEm:nowISO()},'Excursão cancelada.');
+        break;}
+      case 'ex-reativar': await setStatus('excursoes',id,{status:'ativa'},'Excursão reativada.');break;
+      case 'cli-new': formCliente();break;
+      case 'cli-edit': formCliente(id);break;
+      case 'cli-inativar': if(await ask('Inativar este cliente? Ele deixa de aparecer nas listas de seleção, mas o histórico é mantido.','Inativar'))await setStatus('clientes',id,{status:'inativo'},'Cliente inativado.');break;
+      case 'cli-reativar': await setStatus('clientes',id,{status:'ativo'},'Cliente reativado.');break;
+      case 'res-new': formReserva({ex:el.dataset.ex,cli:el.dataset.cli});break;
+      case 'res-edit': formReserva({id});break;
+      case 'res-cancel':{
+        const r=C.RS[id],p=r?pago(r):0;
+        if(await ask('Cancelar esta reserva?'+(p?'\n\nJá foram recebidos '+money(p)+'. O valor continua no financeiro; registre o estorno como despesa, se devolver.':''),'Cancelar reserva'))
+          {await statusReserva(id,'cancelada');toast('Reserva cancelada.')}
+        break;}
+      case 'res-reativar':{
+        await statusReserva(id,'ativa');toast('Reserva reativada.');
+        break;}
+      case 'rec-new': formRecebimento({res:id});break;
+      case 'desp-new': formDespesa();break;
+      case 'lan-edit':{const l=S.lancamentos.find(x=>x.id===id);if(l.tipo==='receita')formRecebimento({lan:id});else formDespesa(id);break;}
+      case 'lan-cancel': if(await ask('Cancelar este lançamento? Ele deixa de entrar nos totais.','Cancelar lançamento'))await setStatus('lancamentos',id,{status:'cancelado'},'Lançamento cancelado.');break;
+      case 'lan-reativar': await setStatus('lancamentos',id,{status:'ativo'},'Lançamento reativado.');break;
+      case 'login':{
+        if(!auth) return;
+        const em=val('l_email').toLowerCase(),se=($('#l_senha')||{}).value||'';
+        S.loginEmail=em;
+        if(!em||!se){S.loginErr='Informe e-mail e senha.';render();break}
+        el.disabled=true;
+        try{await signInWithEmailAndPassword(auth,em,se);S.loginErr=''}
+        catch(e){S.loginErr=errMsg(e);render()}
+        finally{el.disabled=false}
+        break;}
+      case 'reset':{
+        if(!auth) return;
+        const em=val('l_email').toLowerCase();
+        if(!em){S.loginErr='Digite seu e-mail e toque em "Esqueci a senha".';render();break}
+        S.loginEmail=em;
+        try{await sendPasswordResetEmail(auth,em)}catch(e){if(e&&e.code==='auth/network-request-failed')throw e}
+        toast('Se o e-mail estiver cadastrado, você receberá um link para criar nova senha.');
+        break;}
+      case 'logout': if(auth){await signOut(auth);S.tab='inicio'}break;
+      case 'rel-backup': baixarArquivo('backup-crm-excursoes-'+today()+'.json',JSON.stringify({geradoEm:nowISO(),excursoes:S.excursoes,clientes:S.clientes,reservas:S.reservas,lancamentos:S.lancamentos},null,2),'application/json');toast('Backup gerado.');break;
+      case 'rel-print': try{window.print()}catch(_){toast('Não foi possível abrir a impressão aqui. Abra o app pelo link publicado.',true)}break;
+      case 'rel-csv': await baixarCsv();break;
+    }
+  }catch(e){if(!(e instanceof Err))console.error(e);toast(errMsg(e),true)}
+});
+document.addEventListener('input',ev=>{
+  const t=ev.target;
+  if(t.dataset&&t.dataset.bind&&!t.dataset.check){setPath(t.dataset.bind,t.value);render();return}
+  if(S.modal&&S.modal.onInput&&t.closest('#modal'))S.modal.onInput(ev);
+});
+document.addEventListener('change',ev=>{
+  const t=ev.target;
+  if(t.dataset&&t.dataset.check){setPath(t.dataset.bind,t.checked?'1':'0');render();return}
+  if(S.modal&&S.modal.onInput&&t.closest('#modal'))S.modal.onInput(ev);
+});
+document.addEventListener('keydown',ev=>{
+  if(ev.key==='Escape'){if(S.confirmRes)S.confirmRes(false);else if(S.modal)closeModal()}
+  if(ev.key==='Enter'&&ev.target&&ev.target.id==='l_senha'){const b=document.querySelector('[data-act=login]');if(b)b.click()}
+});
+
+/* ---------- inicialização ---------- */
+function init(){
+  render();
+  if(!CONFIG_OK) return;
+  try{startFirebase()}
+  catch(e){console.error(e);S.fatal='Falha ao iniciar o Firebase. Confira os dados do firebaseConfig.';render()}
+}
+init();
+})();
+</script>
+</body>
+</html>
